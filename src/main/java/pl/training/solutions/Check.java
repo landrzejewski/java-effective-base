@@ -3,10 +3,11 @@ package pl.training.solutions;
 import java.util.Objects;
 
 /*
-Minimal self-check harness shared by all solution modules in this package.
+Minimal self-check harness shared by all exercise modules in this package.
 
-Mirrors pl.training.exercises.Check. In the solutions every exercise is implemented, so running a
-module's main() should print only [PASS] lines — they double as a regression test for the answer key.
+Each exercise returns a value; main() compares it against the expected value with expect(...).
+Unsolved stubs throw UnsupportedOperationException — expect(...) catches it and prints [TODO] so a
+single unfinished exercise never aborts the whole run.
 */
 public final class Check {
 
@@ -20,6 +21,7 @@ public final class Check {
         }
     }
 
+    // Overload that runs a supplier, catching the stub's UnsupportedOperationException as [TODO].
     public static void expect(String name, ThrowingSupplier supplier, Object expected) {
         try {
             expect(name, supplier.get(), expected);
