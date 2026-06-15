@@ -1,12 +1,9 @@
-package pl.training.exercises;
-
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
 import static java.util.stream.Collectors.*;
 import static java.util.Comparator.*;
-
 
 /**
  * ĆWICZENIA: Java Stream API — 15 zadań od prostych do złożonych.
@@ -171,10 +168,6 @@ public class StreamExercises {
     static List<String> ex15() {
         throw new UnsupportedOperationException("TODO ćwiczenie 15");
     }
-
-    // ════════════════════════════════════════════════════════════════════
-    //  CHECKER — nie zmieniaj
-    // ════════════════════════════════════════════════════════════════════
 
     static int passed = 0, failed = 0;
 
