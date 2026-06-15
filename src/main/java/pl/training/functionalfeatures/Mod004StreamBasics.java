@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public final class Mod004StreamBasics {
@@ -82,11 +83,17 @@ public final class Mod004StreamBasics {
     - limit(n) / skip(n) — short-circuiting and stateful, respectively.
     - takeWhile(p) / dropWhile(p) — stop / start emitting on first failure (Java 9+).
     */
+
+    static Predicate<Order> byMinOrderTotal(int value) {
+        return order -> order.total() >= value;
+    }
+
     static void intermediateOps() {
         System.out.println("[Section 2] intermediate operations");
 
         var customers = ORDERS.stream()
-                .filter(o -> o.total() >= 50)        // filter
+                //.filter(o -> o.total() >= 50)        // filter
+                .filter(byMinOrderTotal(50))
                 .map(Order::customer)                // map
                 .distinct()                          // distinct (stateful)
                 .sorted()                            // sorted (stateful, blocking)
