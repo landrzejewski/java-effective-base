@@ -314,6 +314,7 @@ public class StreamExamples {
         List<Integer> runningSum = Stream.of(1, 2, 3, 4)
                 .map(x -> acc[0] += x)
                 .toList();
+
         System.out.println("running sum (stateful map): " + runningSum + "   // JDK 24+: Gatherers.scan");
 
         // peekable — Stream nie ma podglądu następnego elementu.
