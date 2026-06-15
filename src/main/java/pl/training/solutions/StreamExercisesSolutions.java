@@ -1,3 +1,5 @@
+package pl.training.solutions;
+
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
