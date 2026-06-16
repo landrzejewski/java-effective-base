@@ -40,7 +40,7 @@ public final class Bank {
         accountRepository.save(account);
     }
 
-    public void transfer(AccountNumber fromNumber, AccountNumber toNumber, Money amount) throws AccountNotFoundException, InsufficientFundsException {
+    public void transfer(final AccountNumber fromNumber, final AccountNumber toNumber, final Money amount) throws AccountNotFoundException, InsufficientFundsException {
         withdraw(fromNumber, amount);
         try {
             deposit(toNumber, amount);

@@ -2,7 +2,7 @@ package pl.training.bank.model;
 
 public final class PremiumAccount extends Account {
 
-    public PremiumAccount(AccountNumber number, Money balance) {
+    public PremiumAccount(final AccountNumber number, final Money balance) {
         super(number, balance);
     }
 
