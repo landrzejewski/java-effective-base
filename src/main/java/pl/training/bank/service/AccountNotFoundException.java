@@ -5,9 +5,9 @@ import pl.training.bank.model.AccountNumber;
 
 public class AccountNotFoundException extends BankException {
 
-    private AccountNumber accountNumber;
+    private final AccountNumber accountNumber;
 
-    public AccountNotFoundException(AccountNumber accountNumber) {
+    public AccountNotFoundException(final AccountNumber accountNumber) {
         this.accountNumber = accountNumber;
     }
 
