@@ -1,0 +1,50 @@
+package pl.training.bank;
+
+import java.util.Objects;
+
+public sealed class Account permits PremiumAccount {
+
+    private final AccountNumber number;
+    protected Money balance;
+
+    public Account(final AccountNumber number, final Money balance) {
+        this.number = number;
+        this.balance = balance;
+    }
+
+    public void deposit(final Money amount) {
+        balance = balance.add(amount);
+    }
+
+    public void withdraw(final Money amount) throws InsufficientFundsException {
+        checkBalance(amount);
+        balance = balance.subtract(amount);
+    }
+
+    private void checkBalance(final Money amount) throws InsufficientFundsException {
+        if (!balance.isGreaterOrEqual(amount)) {
+            throw new InsufficientFundsException();
+        }
+    }
+
+    public AccountNumber getNumber() {
+        return number;
+    }
+
+    public Money getBalance() {
+        return balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(number, account.number) && Objects.equals(balance, account.balance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, balance);
+    }
+
+}

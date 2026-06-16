@@ -14,7 +14,7 @@ public final class MoneyFormatters {
         return money -> money.value().toPlainString() + SEPARATOR + money.currency().getCurrencyCode();
     }
 
-    public static MoneyFormatter local(Locale locale) {
+    public static MoneyFormatter local(final Locale locale) {
         var formatter = NumberFormat.getCurrencyInstance(locale);
         return money -> {
             formatter.setCurrency(money.currency());

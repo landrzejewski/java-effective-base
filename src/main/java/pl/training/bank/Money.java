@@ -7,9 +7,6 @@ import java.util.Currency;
 public record Money(BigDecimal value, Currency currency) {
 
     public Money {
-        if (value.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Value must be greater than zero");
-        }
         value = value.setScale(currency.getDefaultFractionDigits(), RoundingMode.HALF_EVEN);
     }
 
