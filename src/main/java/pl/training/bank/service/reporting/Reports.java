@@ -8,6 +8,7 @@ import pl.training.bank.service.AccountRepository;
 import java.util.Currency;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.partitioningBy;
@@ -38,7 +39,9 @@ public final class Reports {
                 .collect(partitioningBy(account -> account instanceof PremiumAccount));
     }
 
+    public Optional<Account> richest(Currency currency) {
 
+    }
 
 
 }
