@@ -38,10 +38,18 @@ public final class Reports {
                 .collect(partitioningBy(account -> account instanceof PremiumAccount));
     }
 
-    public Optional<Account> richestAccount(Currency currency) {
+    public Optional<Account> richestAccount(final Currency currency) {
         return accountRepository.findAll()
                 .filter(account -> account.getCurrency() == currency)
                 .max(Comparator.comparing(account -> account.getBalance().value()));
+    }
+
+    public DoubleSummaryStatistics balanceStatistics(final Currency currency) {
+        return accountRepository.findAll()
+                .map(Account::getBalance)
+                .filter(money -> money.hasCurrency(currency))
+                .mapToDouble(value -> value.value().doubleValue())
+                .summaryStatistics();
     }
 
     public String custom(final Predicate<Account> predicate, final AccountFormatter accountFormatter) {
@@ -52,6 +60,10 @@ public final class Reports {
                 --- Report ---
                 %s
                 """.formatted(body);
+    }
+
+    public <O> O aggregate(final Aggregator<Account, O> aggregator) {
+        return aggregator.aggregate(accountRepository.findAll());
     }
 
 }

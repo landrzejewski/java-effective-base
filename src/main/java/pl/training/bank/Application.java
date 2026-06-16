@@ -5,6 +5,11 @@ import pl.training.bank.model.Money;
 import pl.training.bank.service.AccountNotFoundException;
 
 import java.util.Currency;
+import java.util.stream.Stream;
+
+import static pl.training.bank.model.AccountFormatters.csv;
+import static pl.training.bank.service.reporting.Predicates.all;
+import static pl.training.bank.service.reporting.Predicates.inCurrency;
 
 public class Application {
 
@@ -29,6 +34,17 @@ public class Application {
         System.out.println("Accounts by type: " + accountsByType);
         var richestAccount = reports.richestAccount(DEFAULT_CURRENCY);
         System.out.println("Richest account: " + richestAccount);
+        var balanceStatistics = reports.balanceStatistics(DEFAULT_CURRENCY);
+        System.out.println("Balance statistics: " + balanceStatistics);
+
+        var report = reports.custom(
+                all().and(inCurrency(DEFAULT_CURRENCY)),
+                csv().andThen(String::toUpperCase)
+        );
+        System.out.println(report);
+
+        var count = reports.aggregate(Stream::count);
+        System.out.println("Aggregated count: " + count);
     }
 
 }
