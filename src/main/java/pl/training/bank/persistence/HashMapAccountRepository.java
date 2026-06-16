@@ -1,8 +1,10 @@
 package pl.training.bank.persistence;
 
-import pl.training.bank.model.Account;
-import pl.training.bank.model.AccountNumber;
-import pl.training.bank.service.AccountRepository;
+import pl.training.bank.domain.model.Account;
+import pl.training.bank.domain.model.AccountNumber;
+import pl.training.bank.domain.model.Page;
+import pl.training.bank.domain.model.PageRequest;
+import pl.training.bank.domain.AccountRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,13 +28,24 @@ public final class HashMapAccountRepository implements AccountRepository {
     }
 
     @Override
+    public Page<Account> findAll(final PageRequest pageRequest) {
+        var items = accounts.values().stream()
+                .skip(pageRequest.offest())
+                .limit(pageRequest.size())
+                .toList();
+        var totalPages = pageRequest.size() == 0 ? 0 : (long) Math.ceil((double) accounts.size() / pageRequest.size());
+        return new Page<>(items, totalPages);
+    }
+
+    @Override
     public Stream<Account> findAll() {
         return accounts.values().stream();
     }
 
     @Override
-    public Stream<Account> findBy(Predicate<Account> predicate) {
+    public Stream<Account> findBy(final Predicate<Account> predicate) {
         return findAll().filter(predicate);
     }
+
 
 }

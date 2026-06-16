@@ -1,17 +1,18 @@
 package pl.training.bank;
 
-import pl.training.bank.model.InsufficientFundsException;
-import pl.training.bank.model.Money;
-import pl.training.bank.service.AccountNotFoundException;
+import pl.training.bank.domain.model.InsufficientFundsException;
+import pl.training.bank.domain.model.Money;
+import pl.training.bank.domain.model.PageRequest;
+import pl.training.bank.domain.AccountNotFoundException;
 
+import java.time.LocalDate;
 import java.util.Currency;
-import java.util.stream.Stream;
 
-import static pl.training.bank.model.AccountFormatters.csv;
-import static pl.training.bank.service.reporting.Predicates.all;
-import static pl.training.bank.service.reporting.Predicates.inCurrency;
+import static pl.training.bank.domain.model.AccountFormatters.csv;
+import static pl.training.bank.domain.reporting.Reports.Predicates.all;
+import static pl.training.bank.domain.reporting.Reports.Predicates.inCurrency;
 
-public class Application {
+public final class Application {
 
     private final static Currency DEFAULT_CURRENCY =  Currency.getInstance("PLN");
 
@@ -19,6 +20,8 @@ public class Application {
         var bankConfiguration = new BankConfiguration();
         var bank = bankConfiguration.bank();
         var reports = bankConfiguration.reports();
+        var operations = bankConfiguration.operations();
+        var repository = bankConfiguration.accountRepository();
 
         var firstAccount = bank.createAccount(DEFAULT_CURRENCY, false);
         var secondAccount = bank.createAccount(DEFAULT_CURRENCY, true);
@@ -43,8 +46,17 @@ public class Application {
         );
         System.out.println(report);
 
-        var count = reports.aggregate(Stream::count);
-        System.out.println("Aggregated count: " + count);
+        var today = LocalDate.now();
+        System.out.println("All operations: " + operations.all());
+        System.out.println("Operations for first account: " + operations.forAccount(firstAccount.getNumber()));
+        System.out.println("Operations grouped by day: " + operations.groupByDay());
+        System.out.println("Total deposited (first account): " + operations.totalDeposited(firstAccount.getNumber(), DEFAULT_CURRENCY));
+        System.out.println("Account age (first account): " + operations.accountAge(firstAccount.getNumber(), today));
+        System.out.println("Activity span (first account): " + operations.activitySpan(firstAccount.getNumber()));
+        System.out.println("Statement (first account, today): " + operations.statement(firstAccount.getNumber(), today, today));
+
+        System.out.println("Page 0 (size 1): " + repository.findAll(new PageRequest(0, 1)));
+        System.out.println("Page 1 (size 1): " + repository.findAll(new PageRequest(1, 1)));
     }
 
 }
