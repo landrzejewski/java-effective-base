@@ -6,6 +6,10 @@ import java.util.function.Predicate;
 import java.util.stream.Gatherer;
 import java.util.stream.Stream;
 
+import static java.util.stream.Gatherers.*;
+import static java.util.stream.Gatherers.mapConcurrent;
+import static java.util.stream.Gatherers.scan;
+
 /*
  *  Gatherer to mechanizm definiowania WŁASNYCH operacji POŚREDNICH (intermediate)
  *  na strumieniach
@@ -36,25 +40,29 @@ public class Gatherers {
     static void builtIns() {
         // windowFixed(n): rozłączne okna stałego rozmiaru; ostatnie bywa krótsze.
         System.out.println("windowFixed(3)   = " + Stream.of(1, 2, 3, 4, 5, 6, 7)
-                .gather(java.util.stream.Gatherers.windowFixed(3)).toList());          // [[1,2,3],[4,5,6],[7]]
+                .gather(windowFixed(3))
+                .toList());          // [[1,2,3],[4,5,6],[7]]
 
         // windowSliding(n): okno przesuwne o krok 1 — np. różnice między sąsiadami.
         System.out.println("windowSliding(3) = " + Stream.of(1, 2, 3, 4, 5)
-                .gather(java.util.stream.Gatherers.windowSliding(3)).toList());        // [[1,2,3],[2,3,4],[3,4,5]]
+                .gather(windowSliding(3))
+                .toList());        // [[1,2,3],[2,3,4],[3,4,5]]
 
         // fold(init, acc): redukcja do JEDNEGO elementu (stateful, ściśle sekwencyjny;
         // nie wymaga tożsamości ani asocjatywności — inaczej niż reduce).
         System.out.println("fold             = " + Stream.of("a", "b", "c")
-                .gather(java.util.stream.Gatherers.fold(() -> "", (acc, x) -> acc + x)).findFirst());  // Optional[abc]
+                .gather(fold(() -> "", (acc, x) -> acc + x))
+                .findFirst());  // Optional[abc]
 
         // scan(init, acc): jak fold, ale emituje KAŻDY stan pośredni (skan prefiksowy).
         System.out.println("scan (sumy)      = " + Stream.of(1, 2, 3, 4)
-                .gather(java.util.stream.Gatherers.scan(() -> 0, Integer::sum)).toList());             // [1,3,6,10]
+                .gather(scan(() -> 0, Integer::sum))
+                .toList());             // [1,3,6,10]
 
         // mapConcurrent(N, mapper): mapuje współbieżnie na wątkach wirtualnych
         // (max N naraz), ZACHOWUJĄC kolejność. Najlepsze do równoległego I/O.
         System.out.println("mapConcurrent(2) = " + Stream.of("a", "b", "c", "d")
-                .gather(java.util.stream.Gatherers.mapConcurrent(2, Gatherers::slowFetch)).toList()); // [A,B,C,D]
+                .gather(mapConcurrent(2, Gatherers::slowFetch)).toList()); // [A,B,C,D]
     }
 
     static String slowFetch(String s) {
@@ -117,7 +125,7 @@ public class Gatherers {
         /* KOMPOZYCJA — łańcuch gather().gather() */
         System.out.println("gather().gather()       = " + Stream.of(1, 2, 3, 4, 5, 6)
                 .gather(takeWhileInclusive(n -> n < 5))   // 1,2,3,4,5
-                .gather(java.util.stream.Gatherers.windowFixed(2))         // [[1,2],[3,4],[5]]
+                .gather(windowFixed(2))         // [[1,2],[3,4],[5]]
                 .toList());
     }
 
