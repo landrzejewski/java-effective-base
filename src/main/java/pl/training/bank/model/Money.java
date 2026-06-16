@@ -1,4 +1,4 @@
-package pl.training.bank;
+package pl.training.bank.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

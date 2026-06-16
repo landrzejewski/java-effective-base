@@ -1,4 +1,4 @@
-package pl.training.bank;
+package pl.training.bank.model;
 
 public final class PremiumAccount extends Account {
 
@@ -7,7 +7,7 @@ public final class PremiumAccount extends Account {
     }
 
     @Override
-    public void withdraw(Money amount) {
+    public void withdraw(final Money amount) {
         balance = balance.subtract(amount);
     }
 

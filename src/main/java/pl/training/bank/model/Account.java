@@ -1,4 +1,4 @@
-package pl.training.bank;
+package pl.training.bank.model;
 
 import java.util.Objects;
 
