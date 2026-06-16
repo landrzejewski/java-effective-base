@@ -30,9 +30,13 @@ public record Money(BigDecimal value, Currency currency) {
     }
 
     private void checkCurrencyCompatibility(final Currency currency) {
-        if (this.currency != currency) {
+        if (!hasCurrency(currency)) {
             throw new IllegalArgumentException("Currencies are not compatible");
         }
+    }
+
+    public boolean hasCurrency(final Currency currency) {
+       return this.currency == currency;
     }
 
 }

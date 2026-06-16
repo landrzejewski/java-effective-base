@@ -7,6 +7,7 @@ import pl.training.bank.service.AccountRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public final class HashMapAccountRepository implements AccountRepository {
 
@@ -21,6 +22,11 @@ public final class HashMapAccountRepository implements AccountRepository {
     @Override
     public Optional<Account> findByNumber(final AccountNumber number) {
         return Optional.ofNullable(accounts.get(number));
+    }
+
+    @Override
+    public Stream<Account> findAll() {
+        return accounts.values().stream();
     }
 
 }

@@ -1,5 +1,6 @@
 package pl.training.bank.model;
 
+import java.util.Currency;
 import java.util.Objects;
 
 public sealed class Account permits PremiumAccount {
@@ -35,6 +36,10 @@ public sealed class Account permits PremiumAccount {
         return balance;
     }
 
+    public Currency getCurrency() {
+        return balance.currency();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -45,6 +50,14 @@ public sealed class Account permits PremiumAccount {
     @Override
     public int hashCode() {
         return Objects.hash(number, balance);
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "number=" + number +
+                ", balance=" + balance +
+                '}';
     }
 
 }
