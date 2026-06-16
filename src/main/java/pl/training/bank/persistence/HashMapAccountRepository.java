@@ -7,6 +7,7 @@ import pl.training.bank.service.AccountRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public final class HashMapAccountRepository implements AccountRepository {
@@ -27,6 +28,11 @@ public final class HashMapAccountRepository implements AccountRepository {
     @Override
     public Stream<Account> findAll() {
         return accounts.values().stream();
+    }
+
+    @Override
+    public Stream<Account> findBy(Predicate<Account> predicate) {
+        return findAll().filter(predicate);
     }
 
 }

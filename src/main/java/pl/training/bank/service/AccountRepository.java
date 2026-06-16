@@ -4,6 +4,7 @@ import pl.training.bank.model.Account;
 import pl.training.bank.model.AccountNumber;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public interface AccountRepository {
@@ -13,5 +14,7 @@ public interface AccountRepository {
     Optional<Account> findByNumber(AccountNumber number);
 
     Stream<Account> findAll();
+
+    Stream<Account> findBy(Predicate<Account> predicate);
 
 }

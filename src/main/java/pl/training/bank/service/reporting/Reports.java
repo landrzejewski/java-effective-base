@@ -1,15 +1,17 @@
 package pl.training.bank.service.reporting;
 
 import pl.training.bank.model.Account;
+import pl.training.bank.model.AccountFormatter;
 import pl.training.bank.model.Money;
 import pl.training.bank.model.PremiumAccount;
 import pl.training.bank.service.AccountRepository;
 
 import java.util.*;
+import java.util.function.Predicate;
 
+import static java.lang.System.lineSeparator;
 import static java.math.BigDecimal.ZERO;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.*;
 
 public final class Reports {
 
@@ -40,6 +42,16 @@ public final class Reports {
         return accountRepository.findAll()
                 .filter(account -> account.getCurrency() == currency)
                 .max(Comparator.comparing(account -> account.getBalance().value()));
+    }
+
+    public String custom(final Predicate<Account> predicate, final AccountFormatter accountFormatter) {
+        var body = accountRepository.findBy(predicate)
+                .map(accountFormatter::format)
+                .collect(joining(lineSeparator()));
+        return """
+                --- Report ---
+                %s
+                """.formatted(body);
     }
 
 }
