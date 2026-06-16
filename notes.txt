@@ -1,0 +1,9 @@
+- all
+- forAccount(AccountNumber)
+- between(LocalDateTime from, LocalDateTime to)
+- on(LocalDate day)
+- Map<LocalDate, List<Operation>> groupByDay()
+- Optional<Period> accountAge(AccountNumber number, LocalDate today)
+- Optional<Duration> activitySpan(AccountNumber number)
+- Money totalDeposited(AccountNumber number, Currency currency)
+- List<Operation> statement(AccountNumber number, LocalDate from, LocalDate to)

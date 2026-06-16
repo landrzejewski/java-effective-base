@@ -2,11 +2,12 @@ package pl.training.bank;
 
 import pl.training.bank.model.AccountNumber;
 import pl.training.bank.persistence.HashMapAccountRepository;
-import pl.training.bank.service.AccountRepository;
-import pl.training.bank.service.Bank;
-import pl.training.bank.service.UUIDAccountNumberSupplier;
+import pl.training.bank.service.*;
+import pl.training.bank.service.history.Operations;
 import pl.training.bank.service.reporting.Reports;
 
+import java.time.Clock;
+import java.time.ZoneId;
 import java.util.function.Supplier;
 
 public class BankConfiguration {
@@ -22,7 +23,8 @@ public class BankConfiguration {
     }
 
     public Bank bank() {
-        return new Bank(accountNumberSupplier(), accountRepository);
+        var clock = Clock.system(ZoneId.of("Europe/Warsaw"));
+        return new BankOperationsProxy(new BankService(accountNumberSupplier(), accountRepository), new Operations(), clock);
     }
 
 }
