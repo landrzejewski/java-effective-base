@@ -5,10 +5,7 @@ import pl.training.bank.model.Money;
 import pl.training.bank.model.PremiumAccount;
 import pl.training.bank.service.AccountRepository;
 
-import java.util.Currency;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.math.BigDecimal.ZERO;
 import static java.util.stream.Collectors.partitioningBy;
@@ -39,9 +36,10 @@ public final class Reports {
                 .collect(partitioningBy(account -> account instanceof PremiumAccount));
     }
 
-    public Optional<Account> richest(Currency currency) {
-
+    public Optional<Account> richestAccount(Currency currency) {
+        return accountRepository.findAll()
+                .filter(account -> account.getCurrency() == currency)
+                .max(Comparator.comparing(account -> account.getBalance().value()));
     }
-
 
 }

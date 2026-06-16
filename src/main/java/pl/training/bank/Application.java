@@ -27,6 +27,8 @@ public class Application {
         System.out.println("Total balance by currency: " + totalBalanceByCurrency);
         var accountsByType = reports.accountsByType();
         System.out.println("Accounts by type: " + accountsByType);
+        var richestAccount = reports.richestAccount(DEFAULT_CURRENCY);
+        System.out.println("Richest account: " + richestAccount);
     }
 
 }
